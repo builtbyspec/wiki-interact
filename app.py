@@ -59,10 +59,8 @@ top_layout = go.Layout(
 
 jumbotron = dbc.Jumbotron(
     [
-        html.H1("Spotify Through the Ears", className="display-3"),
-        html.P(
-            "An exploration of bops, beats, bangers, and the listeners who play them"
-        )
+        html.H1("{{A title might go here.}}", className="display-3"),
+        html.P("{{Some semblance of a tagline might go here.}}")
     ],
     className = 'my-div text-center',
 )
@@ -129,8 +127,8 @@ body = dbc.Container(
                 dbc.Col(
                     [
                         html.H2("Introduction"),
-                        html.P(prose_df.loc["intro", "prose_1"]),
-                        html.P(prose_df.loc["intro", "prose_2"]),
+                        html.P("{{Some semblance of an introduction might go here.}}"),
+                        html.P("{{Some semblance of an introduction might go here.}}"),
                         html.Div(
                             [html.P("Choose topic")],
                             className="sidenote-text"
