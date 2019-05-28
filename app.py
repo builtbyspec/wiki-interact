@@ -12,10 +12,7 @@ ratios_df = pd.read_csv('ratios.csv').dropna()
 streams_df = pd.read_csv('streams.csv').reset_index(drop=True)
 top_streams_df = pd.read_csv('top_streams.csv')
 spec_ratios_df = pd.read_csv('spec_ratios.csv')
-travis_df = pd.read_csv('travis.csv')
 top_df = pd.read_csv('top.csv')
-lil_peep_df = pd.read_csv('lil_peep.csv')
-x_df = pd.read_csv('x.csv')
 f_df = pd.read_csv('mean_features.csv')
 options_list = [{'label':artist,'value':artist} for artist in top_df.Artist.unique()]
 
@@ -25,47 +22,6 @@ low_ratios_vals = ratios_df.ratio[len-5:len].tolist()
 low_ratios_labels = ratios_df.Artist[len-5:len].tolist()
 
 df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv")
-
-song_1 = travis_df[travis_df.track_name == "SICKO MODE"]
-song_2 = travis_df[travis_df.track_name == "Butterfly Effect"]
-song_3 = travis_df[travis_df.track_name == "CAROUSEL"]
-song_4 = travis_df[travis_df.track_name == "R.I.P. SCREW"]
-song_5 = travis_df[travis_df.track_name == "STARGAZING"]
-
-travis_1 = go.Scatter(
-                x= song_1.date,
-                y= song_1.mean_streams,
-                name = "SICKO MODE",
-                line = dict(color = '#90DAB5'),
-                opacity = 0.8)
-
-travis_2 = go.Scatter(
-                x=song_2.date,
-                y=song_2.mean_streams,
-                name = "Butterfly Effect",
-                line = dict(color = '#3F94AB'),
-                opacity = 0.8)
-
-travis_3 = go.Scatter(
-                x=song_3.date,
-                y=song_3.mean_streams,
-                name = "CAROUSEL",
-                line = dict(color = '#6285B2'),
-                opacity = 0.8)
-
-travis_4 = go.Scatter(
-                x=song_4.date,
-                y=song_4.mean_streams,
-                name = "R.I.P. SCREW",
-                line = dict(color = '#4B4782'),
-                opacity = 0.8)
-
-travis_5 = go.Scatter(
-                x=song_5.date,
-                y=song_5.mean_streams,
-                name = "STARGAZING",
-                line = dict(color = '#3E3E3E'),
-                opacity = 0.8)
 
 ozuna = go.Scatter(
                 x=top_streams_df[top_streams_df.artist == "Ozuna"].date,
@@ -102,81 +58,6 @@ chainsmokers = go.Scatter(
                 line = dict(color = '#3E3E3E'),
                 opacity = 0.8)
 
-lil_peep = go.Scatter(
-                x=lil_peep_df["date"],
-                y=lil_peep_df["mean_streams"],
-                showlegend = False
-)
-
-lil_peep_pos = go.Scatter(
-                x=lil_peep_df["date"],
-                y=lil_peep_df["max_position"],
-                showlegend = False
-)
-
-x_streams = go.Scatter(
-                x=x_df["date"],
-                y=x_df["mean_streams"],
-                showlegend = False
-)
-
-x_pos = go.Scatter(
-                x=x_df["date"],
-                y=x_df["max_position"],
-                showlegend = False
-)
-
-trace0 = go.Scatter(
-    x=["2017-11-15", "19-01-01", "18-09-19"],
-    y=[2100000, 2100000, 2300000],
-    text=['Death', 'COWYS Pt. 2 drops', 'Falling Down drops'],
-    mode='text',
-    showlegend = False,
-    textfont=dict(
-        size=14,
-        color='rgb(29,185,84)',
-        family='Overpass'
-    )
-)
-
-trace1 = go.Scatter(
-    x=["2017-11-15", "19-01-01", "18-09-19"],
-    y=[225, 210, 225],
-    text=['Death', 'COWYS Pt. 2 drops', 'Falling Down drops'],
-    mode='text',
-    showlegend = False,
-    textfont=dict(
-        size=14,
-        color='rgb(29,185,84)',
-        family='Overpass'
-    )
-)
-
-trace_x = go.Scatter(
-    x=["17-08-25", "18-01-16", "18-06-18", "18-12-07"],
-    y=[1300000, 1300000, 1300000, 1300000],
-    text=['17 drops', '? drops', 'X passes', 'Skins drops'],
-    mode='text',
-    showlegend = False,
-    textfont=dict(
-        size=14,
-        color='rgb(29,185,84)',
-        family='Overpass'
-    )
-)
-
-trace_x_pos = go.Scatter(
-    x=["17-08-25", "18-03-16", "18-06-18", "18-12-07"],
-    y=[235, 235, 235, 235],
-    text=['17 drops', '? drops', 'X Passes', 'Skins drops'],
-    mode='text',
-    showlegend = False,
-    textfont=dict(
-        size=14,
-        color='rgb(29,185,84)',
-        family='Overpass'
-    )
-)
 
 stream_ratio = go.Bar(
     x=low_ratios_vals,
@@ -302,15 +183,6 @@ fig['layout'].update(height=1000)
 stream_ratio_data = [stream_ratio]
 low_stream_ratio_data = [low_stream_ratio]
 top_data = [ozuna,sheeran,chainsmokers,malone,drake]
-lil_peep_data = [lil_peep, trace0]
-lil_peep_pos_data = [lil_peep_pos, trace1]
-x_streams_data = [x_streams, trace_x]
-x_pos_data = [x_pos, trace_x_pos]
-travis_data = [travis_1, travis_2, travis_3, travis_4, travis_5]
-
-travis_layout = go.Layout(
-    title = "Travis Scott's Top Songs",
-)
 
 top_layout = go.Layout(
     title = "Streams per Day of Top 5 Artists",
@@ -336,222 +208,6 @@ low_ratio_layout = go.Layout(
     ),
 )
 
-lil_peep_layout = {
-    'title' : "Streams on Spotify Charts over Time",
-    'xaxis': {
-        'range': ['2017-08-01','2019-06-01']
-    },
-    'yaxis': {
-        'range': [0, 2500000]
-    },
-    'shapes': [
-        # Line Vertical Death
-        {
-            'type': 'line',
-            'x0': "2017-11-15",
-            'y0': 0,
-            'x1': "2017-11-15",
-            'y1': 2000000,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-        # Line Vertical Falling Down
-        {
-            'type': 'line',
-            'x0': "18-11-09",
-            'y0': 0,
-            'x1': "18-11-09",
-            'y1': 2000000,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-        # Line Vertical Album
-        {
-            'type': 'line',
-            'x0': "18-09-19",
-            'y0': 0,
-            'x1': "18-09-19",
-            'y1': 2000000,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-    ]
-}
-
-lil_peep_pos_layout = {
-    'title' : "Position on Spotify Charts over Time",
-    'xaxis': {
-        'range': ['2017-08-01','2019-06-01']
-    },
-    'yaxis': {
-        'range': [0, 250]
-    },
-    'shapes': [
-        # Line Vertical Death
-        {
-            'type': 'line',
-            'x0': "2017-11-15",
-            'y0': 0,
-            'x1': "2017-11-15",
-            'y1': 200,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-        # Line Vertical Falling Down
-        {
-            'type': 'line',
-            'x0': "18-11-09",
-            'y0': 0,
-            'x1': "18-11-09",
-            'y1': 200,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-        # Line Vertical Album
-        {
-            'type': 'line',
-            'x0': "18-09-19",
-            'y0': 0,
-            'x1': "18-09-19",
-            'y1': 200,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-    ]
-}
-
-x_streams_layout = {
-    'title' : "Streams on Spotify Charts over Time",
-    'xaxis': {
-        'range': ['2017-01-01','2019-06-01']
-    },
-    'yaxis': {
-        'range': [0, 1500000]
-    },
-    'shapes': [
-        # Line Vertical Death
-        {
-            'type': 'line',
-            'x0': "18-06-18",
-            'y0': 0,
-            'x1': "18-06-18",
-            'y1': 1200000,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-        # Line Vertical ?
-        {
-            'type': 'line',
-            'x0': "18-03-16",
-            'y0': 0,
-            'x1': "18-03-16",
-            'y1': 1200000,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-        # Line Vertical Skins
-        {
-            'type': 'line',
-            'x0': "18-12-7",
-            'y0': 0,
-            'x1': "18-12-7",
-            'y1': 1200000,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-        # Line Vertical 17
-        {
-            'type': 'line',
-            'x0': "17-08-25",
-            'y0': 0,
-            'x1': "17-08-25",
-            'y1': 1200000,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-    ]
-}
-
-x_pos_layout = {
-    'title' : "Position on Spotify Charts over Time",
-    'xaxis': {
-        'range': ['2017-01-01','2019-06-01']
-    },
-    'yaxis': {
-        'range': [0, 250]
-    },
-    'shapes': [
-        # Line Vertical Death
-        {
-            'type': 'line',
-            'x0': "18-06-18",
-            'y0': 0,
-            'x1': "18-06-18",
-            'y1': 215,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-        # Line Vertical ?
-        {
-            'type': 'line',
-            'x0': "18-03-16",
-            'y0': 0,
-            'x1': "18-03-16",
-            'y1': 215,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-        # Line Vertical Skins
-        {
-            'type': 'line',
-            'x0': "18-12-7",
-            'y0': 0,
-            'x1': "18-12-7",
-            'y1': 215,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-        # Line Vertical 17
-        {
-            'type': 'line',
-            'x0': "17-08-25",
-            'y0': 0,
-            'x1': "17-08-25",
-            'y1': 215,
-            'line': {
-                'color': 'rgb(29,185,84)',
-                'width': 1,
-            },
-        },
-    ]
-}
-
 jumbotron = dbc.Jumbotron(
     [
         html.H1("Spotify Through the Ears", className="display-3"),
@@ -563,13 +219,8 @@ jumbotron = dbc.Jumbotron(
 )
 
 stock_fig = go.Figure(data=top_data, layout=top_layout)
-travis_fig = go.Figure(data=travis_data, layout=travis_layout)
 top_ratio_fig = go.Figure(data=stream_ratio_data, layout=top_ratio_layout)
 low_ratio_fig = go.Figure(data=low_stream_ratio_data, layout=low_ratio_layout)
-peep_fig = go.Figure(data = lil_peep_data, layout = lil_peep_layout)
-peep_pos_fig = go.Figure(data = lil_peep_pos_data, layout = lil_peep_pos_layout)
-x_streams_fig = go.Figure(data=x_streams_data, layout=x_streams_layout)
-x_pos_fig = go.Figure(data=x_pos_data, layout=x_pos_layout)
 date_obj = datetime.datetime.today()
 month_str = ("0" + str(date_obj.month))[-2:]
 day_str = ("0" + str(date_obj.day))[-2:]
@@ -636,28 +287,13 @@ tab1_content = (
 )
 
 tab2_content = (
-    html.H2(prose_df.loc["travis", "title"]),
-    html.P(prose_df.loc["travis", "prose_1"]),
-    dcc.Graph(
-        figure= travis_fig
-    ),
-    html.P(prose_df.loc["travis", "prose_2"]),
     html.H2(prose_df.loc["lil_peep", "title"]),
     html.P(prose_df.loc["lil_peep", "prose_1"]),
     dcc.Graph(
         figure= peep_fig
     ),
     html.P(prose_df.loc["lil_peep", "prose_2"]),
-    dcc.Graph(
-        figure= peep_pos_fig
-    ),
     html.H2(prose_df.loc["x", "title"]),
-    dcc.Graph(
-        figure= x_streams_fig
-    ),
-    dcc.Graph(
-        figure=x_pos_fig
-    ),
     html.P(prose_df.loc["x", "prose_1"])
 )
 
