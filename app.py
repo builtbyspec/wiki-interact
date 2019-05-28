@@ -8,20 +8,7 @@ import datetime
 from plotly import tools
 
 prose_df = pd.read_json("prose.json").T
-ratios_df = pd.read_csv('ratios.csv').dropna()
-streams_df = pd.read_csv('streams.csv').reset_index(drop=True)
 top_streams_df = pd.read_csv('top_streams.csv')
-spec_ratios_df = pd.read_csv('spec_ratios.csv')
-top_df = pd.read_csv('top.csv')
-f_df = pd.read_csv('mean_features.csv')
-options_list = [{'label':artist,'value':artist} for artist in top_df.Artist.unique()]
-
-
-len = ratios_df.ratio.size
-low_ratios_vals = ratios_df.ratio[len-5:len].tolist()
-low_ratios_labels = ratios_df.Artist[len-5:len].tolist()
-
-df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv")
 
 ozuna = go.Scatter(
                 x=top_streams_df[top_streams_df.artist == "Ozuna"].date,
@@ -58,130 +45,6 @@ chainsmokers = go.Scatter(
                 line = dict(color = '#3E3E3E'),
                 opacity = 0.8)
 
-
-stream_ratio = go.Bar(
-    x=low_ratios_vals,
-    y=low_ratios_labels,
-    text=[str(i)[1:4] + ' more weekday streams' for i in low_ratios_vals],
-    textposition='auto',
-    orientation='h',
-    marker=dict(
-        color='rgba(158,202,225,0.6)',
-        line=dict(
-            color='rgba(8,48,107,0.7)',
-            width=1
-        ),
-    )
-)
-low_stream_ratio = go.Bar(
-    x=spec_ratios_df.ratio.tolist(),
-    y=spec_ratios_df.Artist.tolist(),
-    text=[str(i)[1:4] + ' more weekend streams' for i in spec_ratios_df.ratio.tolist()],
-    textposition='auto',
-    orientation='h',
-    marker=dict(
-        color='rgba(158,202,225,0.6)',
-        line=dict(
-            color='rgba(8,48,107,0.7)',
-            width=1
-        ),
-    )
-)
-
-trace_acou = go.Scatter(
-    x=f_df.weekday,
-    y=f_df.mean_energy,
-    showlegend = False,
-    marker=dict(
-        color='rgb(29,185,84)'
-    )
-    #hoverinfo
-)
-
-trace_danc = go.Scatter(
-    x=f_df.weekday,
-    y=f_df.mean_loudness,
-    showlegend = False,
-    marker=dict(
-        color='rgb(29,185,84)'
-    )
-)
-
-trace_ener = go.Scatter(
-    x=f_df.weekday,
-    y=f_df.mean_acousticness,
-    showlegend = False,
-    marker=dict(
-        color='rgb(29,185,84)'
-    )
-)
-
-trace_instr = go.Scatter(
-    x=f_df.weekday,
-    y=f_df.mean_danceability,
-    showlegend = False,
-    marker=dict(
-        color='rgb(29,185,84)'
-    )
-)
-
-trace_live = go.Scatter(
-    x=f_df.weekday,
-    y=f_df.mean_speechiness,
-    showlegend = False,
-    marker=dict(
-        color='rgb(29,185,84)'
-    )
-)
-
-trace_loud = go.Scatter(
-    x=f_df.weekday,
-    y=f_df.mean_instrumentalness,
-    showlegend = False,
-    marker=dict(
-        color='rgb(29,185,84)'
-    )
-)
-
-trace_spee = go.Scatter(
-    x=f_df.weekday,
-    y=f_df.mean_liveness,
-    showlegend = False,
-    marker=dict(
-        color='rgb(29,185,84)'
-    )
-)
-
-trace_vale = go.Scatter(
-    x=f_df.weekday,
-    y=f_df.mean_valence,
-    showlegend = False,
-    marker=dict(
-        color='rgb(29,185,84)'
-    )
-)
-
-fig = tools.make_subplots(rows=4, cols=2, subplot_titles=(
-    'Energy', 'Loudness','Liveness', 'Danceability', 'Speechiness', 'Valence', 'Acousticness','Instrumentalness'
-), print_grid=False)
-
-fig.append_trace(trace_acou, 1, 1)
-fig.append_trace(trace_danc, 1, 2)
-
-fig.append_trace(trace_spee, 2, 1)
-fig.append_trace(trace_instr, 2, 2)
-
-fig.append_trace(trace_live, 3, 1)
-fig.append_trace(trace_vale, 3, 2)
-
-fig.append_trace(trace_ener, 4, 1)
-fig.append_trace(trace_loud, 4, 2)
-
-
-fig['layout'].update(height=1000)
-
-stream_ratio_data = [stream_ratio]
-low_stream_ratio_data = [low_stream_ratio]
 top_data = [ozuna,sheeran,chainsmokers,malone,drake]
 
 top_layout = go.Layout(
@@ -194,20 +57,6 @@ top_layout = go.Layout(
     )
 )
 
-top_ratio_layout = go.Layout(
-    title = "Artists with Lowest Weekend to Weekend Stream Ratios",
-    xaxis = dict(
-        range = [0,1.5]
-    ),
-)
-
-low_ratio_layout = go.Layout(
-    title= "Artists with Highest Weekend to Weekday Stream Ratios",
-    xaxis = dict(
-        range = [0,1.5]
-    ),
-)
-
 jumbotron = dbc.Jumbotron(
     [
         html.H1("Spotify Through the Ears", className="display-3"),
@@ -218,9 +67,6 @@ jumbotron = dbc.Jumbotron(
     className = 'my-div text-center',
 )
 
-stock_fig = go.Figure(data=top_data, layout=top_layout)
-top_ratio_fig = go.Figure(data=stream_ratio_data, layout=top_ratio_layout)
-low_ratio_fig = go.Figure(data=low_stream_ratio_data, layout=low_ratio_layout)
 date_obj = datetime.datetime.today()
 month_str = ("0" + str(date_obj.month))[-2:]
 day_str = ("0" + str(date_obj.day))[-2:]
@@ -237,37 +83,12 @@ tab1_content = (
                             html.H2(prose_df.loc["top_streams", "title"] + str(months[date_obj.month - 1]) + " " + str(date_obj.day) + " (today) in 2017, you would most likely be listening to " + today_artist + "."),
                             html.P(prose_df.loc["top_streams", "prose_1"]),
                             html.P(prose_df.loc["top_streams", "prose_2"], className="sidenote-text"),
-                            dcc.Graph(
-                                id='flyingdog',
-                                config={
-                                    "displaylogo": False,
-                                    'modeBarButtonsToRemove': ['pan2d', 'lasso2d']
-                                },
-                                figure=stock_fig
-                            ),
-                            #html.Div([
-                            #    dcc.Dropdown(
-                            #    id='input-component',
-                            #   options=options_list,
-                            #   placeholder="Select an artist"
-                            #   ),
-                            #   html.Div(id='output-component')
-                            #]),
                             html.H2(prose_df.loc["week_ratios", "title"]),
                             html.P(prose_df.loc["week_ratios", "prose_1"]),
                             html.P(prose_df.loc["week_ratios", "prose_2"]),
                             html.P(prose_df.loc["week_ratios", "prose_3"]),
-                            dcc.Graph(
-                                 figure=low_ratio_fig
-                            ),
                             html.P(prose_df.loc["week_ratios", "prose_4"]),
-                            dcc.Graph(
-                                figure=top_ratio_fig
-                            ),
                             html.P(prose_df.loc["song_features", "prose_1"]),
-                            dcc.Graph(
-                                figure=fig
-                            ),
                             html.P(prose_df.loc["song_features", "prose_2"])
                             #html.P(prose_df.loc["", ""]),
                             #html.P(prose_df.loc["", ""]),
@@ -289,9 +110,6 @@ tab1_content = (
 tab2_content = (
     html.H2(prose_df.loc["lil_peep", "title"]),
     html.P(prose_df.loc["lil_peep", "prose_1"]),
-    dcc.Graph(
-        figure= peep_fig
-    ),
     html.P(prose_df.loc["lil_peep", "prose_2"]),
     html.H2(prose_df.loc["x", "title"]),
     html.P(prose_df.loc["x", "prose_1"])
